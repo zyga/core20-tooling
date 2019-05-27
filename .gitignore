@@ -1,0 +1,19 @@
+# All partition and disk images
+disk.img
+part*.img
+# The sfdisk script
+disk.sfdisk
+# Any snap or assertion is external
+*.snap
+*.assert
+# Editor stuff
+*.swp
+# The "recovery" partition
+part3.tree/systems/
+part3.tree/snaps/
+part3.tree/snapd-initrd.img
+# The special initrd tree
+initrd.snapd
+# UEFI bios binary and log file
+bios.flash
+bios.log

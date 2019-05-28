@@ -47,6 +47,10 @@ int main(int argc, char **argv) {
     mkdir("/bin", 0755);
     mkdir("/etc", 0755);
     symlink("/proc/mtab", "/etc/mounts");
+
+    printf("essential file-systems mounted\n");
+    fflush(stdout);
+
     pid_t child = fork();
     if (child < 0) {
         perror("cannot fork helper process");
@@ -73,6 +77,9 @@ int main(int argc, char **argv) {
             perror("helper process killed by signal");
         }
     }
+    printf("/bin populated with busybox symlinks\n");
+    fflush(stdout);
+
     execl("/busybox-static", "sh", NULL);
 
     // TODO:

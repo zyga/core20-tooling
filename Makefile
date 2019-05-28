@@ -84,6 +84,9 @@ initrd.snapd/init: snapd-init.c | initrd.snapd/
 	$(CC) -static -Wall -o $@ $< && strip $@
 clean::
 	rm -f initrd.snapd/init
+fmt::
+	clang-format -i $(wildcard *.c)
+
 # Package snapd.initrd into a snapd-initrd.img in the systems partition
 part3.tree/snapd-initrd.img: initrd.snapd/init
 	find initrd.snapd/ \! -type d -printf '%P\n' | sort | cpio --create --directory=initrd.snapd --io-size=512 --format=newc --owner=0.0 | gzip > $@

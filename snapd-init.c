@@ -46,7 +46,7 @@ int main(int argc, char **argv) {
     mkdir("/run/initramfs", 0755);
     mkdir("/bin", 0755);
     mkdir("/etc", 0755);
-    symlink("/proc/mtab", "/etc/mounts");
+    symlink("/proc/mounts", "/etc/mtab");
 
     printf("essential file-systems mounted\n");
     fflush(stdout);

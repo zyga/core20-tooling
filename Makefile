@@ -72,7 +72,10 @@ part3.tree/snaps/.stamp: | part3.tree/snaps/
 part3.tree/systems/factory/boot/grubenv: part3.tree/snaps/.stamp | part3.tree/systems/factory/boot/
 	snapd_kernel="$$(find part3.tree/snaps/ -name 'pc-kernel_*.snap' -printf '%f\n' 2>/dev/null | sort -n | head -n 1)"
 	test -n "$$snapd_kernel"
-	grub2-editenv $@ create && grub2-editenv $@ set snapd_kernel="$$snapd_kernel"
+	GRUB_EDITENV="$$(command -v grub2-editenv)"
+	test -z "$$GRUB_EDITENV" && GRUB_EDITENV="$$(command -v grub-editenv)"
+	$$GRUB_EDITENV $@ create
+	$$GRUB_EDITENV $@ set snapd_kernel="$$snapd_kernel"
 clean::
 	rm -rf part3.tree/systems/
 	rm -rf part3.tree/snaps/

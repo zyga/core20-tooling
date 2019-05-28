@@ -45,6 +45,8 @@ int main(int argc, char **argv) {
     }
     mkdir("/run/initramfs", 0755);
     mkdir("/bin", 0755);
+    mkdir("/etc", 0755);
+    symlink("/proc/mtab", "/etc/mounts");
     pid_t child = fork();
     if (child < 0) {
         perror("cannot fork helper process");

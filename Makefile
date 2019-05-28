@@ -175,10 +175,15 @@ disk.img:: part4.img disk.sfdisk
 clean::
 	rm -f disk.img
 
-bios.flash:: /usr/share/qemu/ovmf-x86_64.bin
-	cp $< $@
-bios.flash:: /usr/share/qemu/ovmf-x86_64.bin
-	cp $< $@
+bios.flash:
+	if [ -e /usr/share/qemu/ovmf-x86_64.bin ]; then
+		cp --dereference /usr/share/qemu/ovmf-x86_64.bin $@
+	elif [ -e /usr/share/qemu/OVMF.fdv ]; then
+		cp --dereference /usr/share/qemu/OVMF.fd $@
+	else
+		echo "cannot find bios image"
+		false
+	fi
 clean::
 	rm -f bios.flash
 

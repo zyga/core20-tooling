@@ -175,7 +175,9 @@ disk.img:: part4.img disk.sfdisk
 clean::
 	rm -f disk.img
 
-bios.flash: /usr/share/qemu/ovmf-x86_64.bin
+bios.flash:: /usr/share/qemu/ovmf-x86_64.bin
+	cp $< $@
+bios.flash:: /usr/share/qemu/ovmf-x86_64.bin
 	cp $< $@
 clean::
 	rm -f bios.flash

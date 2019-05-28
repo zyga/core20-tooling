@@ -159,11 +159,11 @@ clean::
 
 # We can update partitions individually and write them concurrently for more
 # parallelism.
-disk.img:: PATH:=$(PATH):/usr/sbin # for sfdisk
+disk.img:: PATH:=$(PATH):/sbin:/usr/sbin # for sfdisk
 disk.img:: disk.sfdisk
 	truncate --size=0 $@
 	truncate --size=$(disk_bytes_size) $@
-	/usr/sbin/sfdisk --quiet $@ <$<
+	sfdisk --quiet $@ <$<
 disk.img:: part1.img disk.sfdisk
 	dd of=$@ seek=$(part1_sectors_start) count=$(part1_sectors_size) bs=$(sector_size) conv=notrunc,sparse if=$< status=none
 disk.img:: part2.img disk.sfdisk

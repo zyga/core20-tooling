@@ -58,7 +58,7 @@ int main(int argc, char **argv) {
     }
     if (child == 0) {
         execl("/busybox-static", "sh", "-c",
-              "for cmd in $(/busybox-static --list); do /busybox-static ln -s /busybox-static /bin/$cmd; done;", NULL);
+              "for cmd in $(/busybox-static --list); do /busybox-static ln -fs /busybox-static /bin/$cmd; done;", NULL);
         perror("cannot exec busybox boostrap script");
         return 1;
     } else {

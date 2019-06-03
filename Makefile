@@ -213,7 +213,7 @@ run: disk.img bios.flash
 		-m 256 \
 		-smp 4 \
 		-k en \
-		-drive if=pflash,format=raw,file=bios.flash \
+		-bios bios.flash \
 		-global isa-debugcon.iobase=0x402 -debugcon file:bios.log \
 		-blockdev driver=file,node-name=disk_file,filename=$< \
 		-blockdev driver=raw,node-name=disk,file=disk_file \

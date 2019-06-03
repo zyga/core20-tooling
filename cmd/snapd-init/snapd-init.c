@@ -35,15 +35,12 @@ static int do_mkdir_many(const char **dnames, mode_t mode) {
 
 static int construct_skeleton_fs(void) {
     const char *dnames[] = {
-        /* NOTE: kernel creates /dev and /root internally */
-        /* NOTE: /proc is mounted by snapd-boot */
-        "/bin", "/etc", "/run", "/sys", "/tmp", "/var", "/var/lock", NULL,
+		/* NOTE: kernel creates /dev and /root internally */
+		/* NOTE: /proc is mounted by snapd-boot */
+		/* NOTE: /sys is mounted by snapd-boot */
+        "/bin", "/etc", "/run", "/tmp", "/var", "/var/lock", NULL,
     };
     if (do_mkdir_many(dnames, 0755) < 0) {
-        return -1;
-    }
-    if (mount("sysfs", "/sys", "sysfs", MS_NODEV | MS_NOEXEC | MS_NOSUID, NULL) < 0) {
-        fprintf(stderr, "cannot mount /sys: %m\n");
         return -1;
     }
     if (mount("udev", "/dev", "devtmpfs", MS_NOSUID, "mode=0755") < 0) {

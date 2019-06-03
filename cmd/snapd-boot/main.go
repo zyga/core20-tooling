@@ -6,19 +6,33 @@ import (
 	"syscall"
 )
 
-func mountProc() error {
-	const path = "/proc"
+func mountFundamental(path, fstype string, flags int) error {
 	err := os.Mkdir(path, 0755)
 	if err != nil && os.IsExist(err) {
 		return err
 	}
-	return syscall.Mount("proc", path, "proc",
-		syscall.MS_NODEV|syscall.MS_NOEXEC|syscall.MS_NOSUID, "")
+	return syscall.Mount(fstype, path, fstype, uintptr(flags), "")
+}
+
+func mountProc() error {
+	const path = "/proc"
+	const fsname = "proc"
+	const flags = syscall.MS_NODEV | syscall.MS_NOEXEC | syscall.MS_NOSUID
+	return mountFundamental(path, fsname, flags)
+}
+
+func mountSys() error {
+	const path = "/sys"
+	const fsname = "sysfs"
+	const flags = syscall.MS_NODEV | syscall.MS_NOEXEC | syscall.MS_NOSUID
+	return mountFundamental(path, fsname, flags)
 }
 
 func run() error {
-	err := mountProc()
-	if err != nil {
+	if err := mountProc(); err != nil {
+		return err
+	}
+	if err := mountSys(); err != nil {
 		return err
 	}
 	args, err := kernelArgs()

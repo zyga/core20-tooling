@@ -83,15 +83,22 @@ clean::
 # Build snapd-init.c into a init program in snapd.initrd directory
 initrd.snapd/:
 	mkdir -p $@
-initrd.snapd/init: snapd-init.c | initrd.snapd/
+initrd.snapd/init: cmd/snapd-init/snapd-init.c | initrd.snapd/
 	$(CC) -static -Wall -o $@ $< && strip $@
-clean::
-	rm -f initrd.snapd/init
-fmt::
-	clang-format -i $(wildcard *.c)
+initrd.snapd/snapd-boot: $(wildcard cmd/snapd-boot/*.go) | initrd.snapd/
+	go build -o $@ -buildmode=exe ./cmd/snapd-boot
+clean:: initrd.snapd/init
+	rm -f $<
+clean:: initrd.snapd/snapd-boot
+	rm -f $<
+fmt:: $(wildcard cmd/snapd-init/*.c)
+	clang-format -i $^
+fmt:: $(wildcard cmd/snapd-boot/*.go)
+	go fmt $^
+
 
 # Package snapd.initrd into a snapd-initrd.img in the systems partition
-part3.tree/snapd-initrd.img: initrd.snapd/init
+part3.tree/snapd-initrd.img: initrd.snapd/init initrd.snapd/snapd-boot $(shell find initrd.snapd -print)
 	find initrd.snapd/ \! -type d -printf '%P\n' | sort | cpio --create --directory=initrd.snapd --io-size=512 --format=newc --owner=0.0 | gzip > $@
 clean::
 	rm -f part3.tree/snapd-initrd.img

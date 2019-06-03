@@ -12,6 +12,8 @@ disk.sfdisk
 part3.tree/systems/
 part3.tree/snaps/
 part3.tree/snapd-initrd.img
+part3.tree/snapd-boot
+part3.tree/snapd-init
 # The special initrd tree
 initrd.snapd
 # UEFI bios binary and log file

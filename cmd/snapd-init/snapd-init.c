@@ -43,17 +43,6 @@ static int construct_skeleton_fs(void) {
     if (do_mkdir_many(dnames, 0755) < 0) {
         return -1;
     }
-    if (mount("udev", "/dev", "devtmpfs", MS_NOSUID, "mode=0755") < 0) {
-        fprintf(stderr, "cannot mount /dev: %m\n");
-        return -1;
-    }
-    if (do_mkdir("/dev/pts", 0755) < 0) {
-        return -1;
-    }
-    if (mount("devpts", "/dev/pts", "devpts", MS_NOEXEC | MS_NOSUID, "gid=5,mode=0620") < 0) {
-        fprintf(stderr, "cannot mount /dev/pts: %m\n");
-        return -1;
-    }
     if (mount("tmpfs", "/run", "tmpfs", MS_NOEXEC | MS_NOSUID, "size=10%,mode=0755") < 0) {
         fprintf(stderr, "cannot mount /run: %m\n");
         return -1;

@@ -95,6 +95,8 @@ fmt:: $(wildcard cmd/snapd-init/*.c)
 	clang-format -i $^
 fmt:: $(wildcard cmd/snapd-boot/*.go)
 	go fmt $^
+check:: $(wildcard cmd/snapd-boot/*.go)
+	go test ./cmd/...
 
 
 # Package snapd.initrd into a snapd-initrd.img in the systems partition

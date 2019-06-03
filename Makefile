@@ -208,7 +208,6 @@ run: disk.img bios.flash
 		-monitor stdio \
 		-m 256 \
 		-smp 4 \
-		-k en \
 		-bios bios.flash \
 		-global isa-debugcon.iobase=0x402 -debugcon file:bios.log \
 		-blockdev driver=file,node-name=disk_file,filename=$< \

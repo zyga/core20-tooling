@@ -35,18 +35,15 @@ static int do_mkdir_many(const char **dnames, mode_t mode) {
 
 static int construct_skeleton_fs(void) {
     const char *dnames[] = {
-		/* NOTE: kernel creates /dev and /root internally */
-        "/bin", "/etc", "/proc", "/run", "/sys", "/tmp", "/var", "/var/lock", NULL,
+        /* NOTE: kernel creates /dev and /root internally */
+        /* NOTE: /proc is mounted by snapd-boot */
+        "/bin", "/etc", "/run", "/sys", "/tmp", "/var", "/var/lock", NULL,
     };
     if (do_mkdir_many(dnames, 0755) < 0) {
         return -1;
     }
     if (mount("sysfs", "/sys", "sysfs", MS_NODEV | MS_NOEXEC | MS_NOSUID, NULL) < 0) {
         fprintf(stderr, "cannot mount /sys: %m\n");
-        return -1;
-    }
-    if (mount("proc", "/proc", "proc", MS_NODEV | MS_NOEXEC | MS_NOSUID, NULL) < 0) {
-        fprintf(stderr, "cannot mount /proc: %m\n");
         return -1;
     }
     if (mount("udev", "/dev", "devtmpfs", MS_NOSUID, "mode=0755") < 0) {
@@ -148,10 +145,10 @@ int call_snapd_boot(void) {
 int main(int argc, char **argv) {
     setlinebuf(stdout);
     printf("snapd-init\n");
-    if (construct_skeleton_fs() < 0) {
+    if (call_snapd_boot() < 0) {
         return 1;
     }
-    if (call_snapd_boot() < 0) {
+    if (construct_skeleton_fs() < 0) {
         return 1;
     }
     if (construct_busybox_farm() == 0) {

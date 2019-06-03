@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"time"
 )
 
 func run() error {
@@ -32,6 +33,7 @@ func main() {
 	err := run()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s\n", err)
+		time.Sleep(10 * time.Second)
 		os.Exit(1)
 	}
 }

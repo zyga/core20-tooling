@@ -2,19 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
-
-	"github.com/google/shlex"
 )
-
-// kernelArgs returns the kernel command line, as read from /proc/cmdline
-func kernelArgs() ([]string, error) {
-	bytes, err := ioutil.ReadFile("/proc/cmdline")
-	if err != nil {
-		return nil, err
-	}
-	return shlex.Split(string(bytes))
-}
 
 func main() {
 	fmt.Println("snapd-boot")

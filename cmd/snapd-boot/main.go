@@ -14,6 +14,9 @@ func run() error {
 		return fmt.Errorf("cannot read kernel command line: %s", err)
 	}
 	fmt.Printf("kernel command line: %#v\n", args)
+	if err := spawnBusyBox(); err != nil {
+		return err
+	}
 	// TODO:
 	// - determine system boot mode, either RUN or RECOVERY.
 	// - determine current BOOT-SET (should be "factory" in this demo)
